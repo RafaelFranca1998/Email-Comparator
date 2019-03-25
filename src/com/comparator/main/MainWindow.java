@@ -28,15 +28,13 @@ import javax.swing.JMenuItem;
 import javax.swing.JMenu;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.Button;
 import java.awt.Color;
 import java.awt.Font;
-import javax.swing.JProgressBar;
+
 
 public class MainWindow {
-	// DECLARAÇÃO DE
-	// COMPONENTES****************************************************************************************
-	public static JFrame frmVerificadorDeDominios;
+	// DECLARAÇÃO DE COMPONENTES****************************************************************************************
+	public  JFrame frmVerificadorDeDominios;
 	private JTextField textFieldEmail;
 	private JTextField textFieldDominios;
 	private JTextField txtInserirEmail;
@@ -51,9 +49,9 @@ public class MainWindow {
 
 	private JButton btnStatistcs;
 	private JButton btnExport;
-
+	
 	/**
-	 * Launch the application.
+	 * Inicia a Aplicação
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -68,9 +66,6 @@ public class MainWindow {
 		});
 	}
 
-	/**
-	 * Create the application.
-	 */
 	public MainWindow() {
 		emailList = new ArrayList<>();
 		dominioList = new ArrayList<>();
@@ -79,7 +74,7 @@ public class MainWindow {
 	}
 
 	/**
-	 * Initialize the contents of the frame.
+	 * Desenha a tela e componentes.
 	 */
 	private void initialize() {
 		frmVerificadorDeDominios = new JFrame();
@@ -89,11 +84,7 @@ public class MainWindow {
 		frmVerificadorDeDominios.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmVerificadorDeDominios.getContentPane().setLayout(null);
 
-		JProgressBar progressBar = new JProgressBar();
-		progressBar.setBounds(139, 369, 549, 14);
-		frmVerificadorDeDominios.getContentPane().add(progressBar);
-
-		Button btEmail = new Button("Escolher Arquivo");
+		JButton btEmail = new JButton("Escolher Arquivo");
 		btEmail.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String cvsPath = getPath();
@@ -240,6 +231,10 @@ public class MainWindow {
 		tableEmail = new JTable();
 		tableEmail.setModel(new DefaultTableModel(new Object[][] { { null }, { null }, { null }, { null }, { null },
 				{ null }, { null }, { null }, { null }, { null }, { null }, }, new String[] { "Email" }) {
+			/**
+					 * 
+					 */
+					private static final long serialVersionUID = 9131615632798182147L;
 			boolean[] columnEditables = new boolean[] { false };
 
 			public boolean isCellEditable(int row, int column) {
@@ -257,6 +252,10 @@ public class MainWindow {
 		tableDominios = new JTable();
 		tableDominios.setModel(new DefaultTableModel(new Object[][] { { null }, { null }, { null }, { null }, { null },
 				{ null }, { null }, { null }, { null }, { null }, }, new String[] { "Dominios" }) {
+			/**
+					 * 
+					 */
+					private static final long serialVersionUID = -7557510312156075286L;
 			boolean[] columnEditables = new boolean[] { false };
 
 			public boolean isCellEditable(int row, int column) {
@@ -270,27 +269,27 @@ public class MainWindow {
 		btnVerificarDominios.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					if (emailList.size() <= 0 || dominioList.size() <= 0) {
+					if (emailList.size() <= 0 || dominioList.size() <= 0) { // checa se a lista está vazia.
 						JOptionPane.showMessageDialog(tableDominios, "Lista vazia", "Erro",
 								JOptionPane.INFORMATION_MESSAGE);
 						return;
 					}
-					System.out.println(dominioList.get(0).toString());
 					if (dominioList.get(0).contains("@"))
-						throw new Exception();
+						throw new Exception();//checa se o dominio contem @.
 					if (!emailList.get(0).contains("@"))
-						throw new Exception();
-					checkError = new CheckErrorWindow(emailList, dominioList);
-					checkError.setOnCompleteListener(new OnCompleteListener() {
+						throw new Exception();//checa se o email não contem @.
+				
+					checkError = null;
+					checkError = new CheckErrorWindow(emailList, dominioList);//inicializa a classe de checagem.
+					checkError.setOnCompleteListener(new OnCompleteListener() {//listener da classe.
 						@Override
 						public void onComplete() {
+							resultList = checkError.getValidEmail();
 							updateResultadoList();
 							btnStatistcs.setEnabled(true);
-							btnExport.setEnabled(true);							
+							btnExport.setEnabled(true);
 						}
 					});
-					resultList = checkError.getValidEmail();
-
 				} catch (Exception e2) {
 					e2.printStackTrace();
 					JOptionPane.showMessageDialog(tableEmail, "Algum dos arquivos Não é compativel!", "Erro",
@@ -306,7 +305,7 @@ public class MainWindow {
 		btnStatistcs.setEnabled(false);
 		btnStatistcs.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new StatisticsWindow(checkError);
+				new StatisticsWindow(checkError); //abre a janela de estatisticas passando o objeto de checagem.
 			}
 		});
 		btnStatistcs.setBounds(670, 168, 164, 67);
@@ -325,7 +324,7 @@ public class MainWindow {
 		btnExport.setEnabled(false);
 		btnExport.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				checkError.exportCvs();
+				checkError.exportCvs();//exporta o arquivo.
 			}
 		});
 		btnExport.setBounds(670, 246, 164, 33);
@@ -366,49 +365,52 @@ public class MainWindow {
 		lblComparadorDeEmails.setFont(new Font("Tahoma", Font.PLAIN, 24));
 		lblComparadorDeEmails.setBounds(288, 32, 255, 36);
 		frmVerificadorDeDominios.getContentPane().add(lblComparadorDeEmails);
-
-		JLabel lblProgresso = new JLabel("Progresso");
-		lblProgresso.setBounds(35, 369, 100, 14);
-		frmVerificadorDeDominios.getContentPane().add(lblProgresso);
 		frmVerificadorDeDominios.setResizable(false);
 	}
-
+	
+	/**
+	 * Obtem caminho do arquivo
+	 * @return Caminho do arquivo.
+	 */
 	private String getPath() {
-		FileDialog fd = new FileDialog(new JFrame());
+		FileDialog fd = new FileDialog(new JFrame());//abre a janela de seleção
 		fd.setVisible(true);
-		File[] f = fd.getFiles();
+		
+		File[] f = fd.getFiles();//obtem e armazena o arquivo
 		String path = "";
 		if (f.length > 0) {
-			path = fd.getFiles()[0].getAbsolutePath();
+			path = fd.getFiles()[0].getAbsolutePath(); // obtem o caminho do arquivo
 			System.out.println(path);
 		}
 		return path;
 	}
-
+	/**
+	 * Lê o arquivo local e armazena ele em uma váriavel;
+	 * @param path
+	 * @return Arraylist com os emails.
+	 */
 	private ArrayList<String> readCvs(String path) {
 
-		String csvFile = path;
-		BufferedReader br = null;
+		String csvFile = path; // caminho do arquivo
+		BufferedReader br = null; //buffer de leitura
 		String line = "";
-		String cvsSplitBy = ",";
+		String cvsSplitBy = ","; //separador
 		String[] email = null;
 		ArrayList<String> result = new ArrayList<>();
 
 		try {
 			br = new BufferedReader(new FileReader(csvFile));
 			while ((line = br.readLine()) != null) {
-				// use comma as separator
+				// separa os dados do arquivo.
 				email = line.split(cvsSplitBy);
-
 				result.add(email[0]);
-				// System.out.println("email " + email[0]);
 			}
 			for (int i = 0; i < result.size(); i++) {
-				result.set(i, result.get(i).replaceAll("'", ""));
+				result.set(i, result.get(i).replaceAll("'", "")); //remove aspas simples
 			}
-			return result;
+			return result;// retorna Arraylist
 		} catch (FileNotFoundException e) {
-			// e.printStackTrace();
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
@@ -423,6 +425,9 @@ public class MainWindow {
 		return result;
 	}
 
+	/**
+	 * Atualiza tabela Email
+	 */
 	private void updateEmailList() {
 		DefaultTableModel modelo = (DefaultTableModel) tableEmail.getModel();
 		modelo.setNumRows(0);
@@ -430,7 +435,10 @@ public class MainWindow {
 			modelo.addRow(new Object[] { s });
 		}
 	}
-
+	
+	/**
+	 * Atualiza tabela Dominio
+	 */
 	private void updateDominioList() {
 		DefaultTableModel modelo = (DefaultTableModel) tableDominios.getModel();
 		modelo.setNumRows(0);
@@ -438,7 +446,9 @@ public class MainWindow {
 			modelo.addRow(new Object[] { s });
 		}
 	}
-
+	/**
+	 * Atualiza tabela Resultado
+	 */
 	private void updateResultadoList() {
 		DefaultTableModel modelo = (DefaultTableModel) tableResultado.getModel();
 		modelo.setNumRows(0);
