@@ -49,6 +49,11 @@ public class MainWindow {
 
 	private JButton btnStatistcs;
 	private JButton btnExport;
+	private JButton btEmail;
+	private JButton btDominios;
+	private JButton btnInserirEmail;
+	private JButton btnVerificarDominios;
+	private JButton btInserirDominio;
 	
 	/**
 	 * Inicia a Aplicação
@@ -74,17 +79,32 @@ public class MainWindow {
 	}
 
 	/**
-	 * Desenha a tela e componentes.
+	 * Inicialização dos componentes da tela.
 	 */
 	private void initialize() {
+		//Configurações da tela
 		frmVerificadorDeDominios = new JFrame();
 		frmVerificadorDeDominios.getContentPane().setBackground(Color.WHITE);
 		frmVerificadorDeDominios.setTitle("Verificador de Dominios");
 		frmVerificadorDeDominios.setBounds(100, 100, 850, 500);
 		frmVerificadorDeDominios.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmVerificadorDeDominios.getContentPane().setLayout(null);
-
-		JButton btEmail = new JButton("Escolher Arquivo");
+		//scrollpane
+		
+		JScrollPane scrollPaneDominios = new JScrollPane();
+		scrollPaneDominios.setBounds(257, 98, 164, 181);
+		frmVerificadorDeDominios.getContentPane().add(scrollPaneDominios);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(455, 98, 185, 181);
+		frmVerificadorDeDominios.getContentPane().add(scrollPane);
+		
+		JScrollPane scrollPaneEmail = new JScrollPane();
+		scrollPaneEmail.setBounds(24, 98, 203, 181);
+		frmVerificadorDeDominios.getContentPane().add(scrollPaneEmail);
+		
+		//botões
+		btEmail = new JButton("Escolher Arquivo");
 		btEmail.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String cvsPath = getPath();
@@ -101,7 +121,7 @@ public class MainWindow {
 		btEmail.setBounds(694, 391, 140, 23);
 		frmVerificadorDeDominios.getContentPane().add(btEmail);
 
-		JButton btDominios = new JButton("Escolher Arquivo");
+		btDominios = new JButton("Escolher Arquivo");
 		btDominios.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String cvsPath = getPath();
@@ -113,53 +133,8 @@ public class MainWindow {
 		});
 		btDominios.setBounds(694, 425, 140, 23);
 		frmVerificadorDeDominios.getContentPane().add(btDominios);
-
-		JLabel lblListaDeEmails = new JLabel("Lista de E-mails");
-		lblListaDeEmails.setBounds(35, 395, 100, 14);
-		frmVerificadorDeDominios.getContentPane().add(lblListaDeEmails);
-
-		JLabel lblListaDeDominios = new JLabel("Lista de dominios");
-		lblListaDeDominios.setBounds(35, 429, 100, 14);
-		frmVerificadorDeDominios.getContentPane().add(lblListaDeDominios);
-
-		textFieldEmail = new JTextField();
-		textFieldEmail.setBounds(139, 392, 549, 20);
-		frmVerificadorDeDominios.getContentPane().add(textFieldEmail);
-		textFieldEmail.setColumns(10);
-
-		textFieldDominios = new JTextField();
-		textFieldDominios.setBounds(139, 426, 549, 20);
-		frmVerificadorDeDominios.getContentPane().add(textFieldDominios);
-		textFieldDominios.setColumns(10);
-
-		txtInserirEmail = new JTextField();
-		txtInserirEmail.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent arg0) {
-				if (arg0.getKeyCode() == KeyEvent.VK_ENTER) {
-					try {
-						if (txtInserirEmail.getText().equals("")) {
-							throw new Exception();
-						}
-						emailList.add(txtInserirEmail.getText());
-						txtInserirEmail.setText("");
-						updateEmailList();
-					} catch (Exception a) {
-						JOptionPane.showMessageDialog(tableDominios, "Erro ao adicionar, Tente novamente.",
-								"Erro ao adicionar!", JOptionPane.ERROR_MESSAGE);
-					}
-				}
-			}
-		});
-		txtInserirEmail.setBounds(24, 304, 203, 20);
-		frmVerificadorDeDominios.getContentPane().add(txtInserirEmail);
-		txtInserirEmail.setColumns(10);
-
-		JLabel lblInserirEmail = new JLabel("Inserir Email");
-		lblInserirEmail.setBounds(86, 290, 72, 14);
-		frmVerificadorDeDominios.getContentPane().add(lblInserirEmail);
-
-		JButton btnInserirEmail = new JButton("Inserir");
+		
+		btnInserirEmail = new JButton("Inserir");
 		btnInserirEmail.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -178,94 +153,7 @@ public class MainWindow {
 		btnInserirEmail.setBounds(72, 335, 89, 23);
 		frmVerificadorDeDominios.getContentPane().add(btnInserirEmail);
 
-		txtInserirDominio = new JTextField();
-		txtInserirDominio.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-					try {
-						if (txtInserirDominio.getText().equals("")) {
-							throw new Exception();
-						}
-						dominioList.add(txtInserirDominio.getText());
-						txtInserirDominio.setText("");
-						updateDominioList();
-					} catch (Exception e2) {
-						JOptionPane.showMessageDialog(tableDominios, "Erro ao adicionar, Tente novamente.",
-								"Erro ao adicionar!", JOptionPane.ERROR_MESSAGE);
-					}
-				}
-			}
-		});
-		txtInserirDominio.setColumns(10);
-		txtInserirDominio.setBounds(257, 304, 164, 20);
-		frmVerificadorDeDominios.getContentPane().add(txtInserirDominio);
-
-		JLabel lblInserirDominio = new JLabel("Inserir Dominio");
-		lblInserirDominio.setBounds(292, 290, 89, 14);
-		frmVerificadorDeDominios.getContentPane().add(lblInserirDominio);
-
-		JButton btInserirDominio = new JButton("Inserir");
-		btInserirDominio.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				try {
-					if (txtInserirDominio.getText().equals("")) {
-						throw new Exception();
-					}
-					dominioList.add(txtInserirDominio.getText());
-					txtInserirDominio.setText("");
-					updateDominioList();
-				} catch (Exception e) {
-					JOptionPane.showMessageDialog(tableDominios, "Erro ao adicionar, Tente novamente.",
-							"Erro ao adicionar!", JOptionPane.ERROR_MESSAGE);
-				}
-			}
-		});
-		btInserirDominio.setBounds(292, 335, 89, 23);
-		frmVerificadorDeDominios.getContentPane().add(btInserirDominio);
-
-		JScrollPane scrollPaneEmail = new JScrollPane();
-		scrollPaneEmail.setBounds(24, 98, 203, 181);
-		frmVerificadorDeDominios.getContentPane().add(scrollPaneEmail);
-
-		tableEmail = new JTable();
-		tableEmail.setModel(new DefaultTableModel(new Object[][] { { null }, { null }, { null }, { null }, { null },
-				{ null }, { null }, { null }, { null }, { null }, { null }, }, new String[] { "Email" }) {
-			/**
-					 * 
-					 */
-					private static final long serialVersionUID = 9131615632798182147L;
-			boolean[] columnEditables = new boolean[] { false };
-
-			public boolean isCellEditable(int row, int column) {
-				return columnEditables[column];
-			}
-		});
-		tableEmail.getColumnModel().getColumn(0).setResizable(false);
-		scrollPaneEmail.setViewportView(tableEmail);
-		tableEmail.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-
-		JScrollPane scrollPaneDominios = new JScrollPane();
-		scrollPaneDominios.setBounds(257, 98, 164, 181);
-		frmVerificadorDeDominios.getContentPane().add(scrollPaneDominios);
-
-		tableDominios = new JTable();
-		tableDominios.setModel(new DefaultTableModel(new Object[][] { { null }, { null }, { null }, { null }, { null },
-				{ null }, { null }, { null }, { null }, { null }, }, new String[] { "Dominios" }) {
-			/**
-					 * 
-					 */
-					private static final long serialVersionUID = -7557510312156075286L;
-			boolean[] columnEditables = new boolean[] { false };
-
-			public boolean isCellEditable(int row, int column) {
-				return columnEditables[column];
-			}
-		});
-		tableDominios.getColumnModel().getColumn(0).setResizable(false);
-		scrollPaneDominios.setViewportView(tableDominios);
-
-		JButton btnVerificarDominios = new JButton("Verificar Dominios");
+		btnVerificarDominios = new JButton("Verificar Dominios");
 		btnVerificarDominios.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -310,16 +198,7 @@ public class MainWindow {
 		});
 		btnStatistcs.setBounds(670, 168, 164, 67);
 		frmVerificadorDeDominios.getContentPane().add(btnStatistcs);
-
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(455, 98, 185, 181);
-		frmVerificadorDeDominios.getContentPane().add(scrollPane);
-
-		tableResultado = new JTable();
-		tableResultado.setModel(new DefaultTableModel(new Object[][] { { null }, { null }, { null }, { null }, { null },
-				{ null }, { null }, { null }, { null }, { null }, }, new String[] { "Resultado" }));
-		scrollPane.setViewportView(tableResultado);
-
+		
 		btnExport = new JButton("Exportar Resultado");
 		btnExport.setEnabled(false);
 		btnExport.addActionListener(new ActionListener() {
@@ -329,7 +208,123 @@ public class MainWindow {
 		});
 		btnExport.setBounds(670, 246, 164, 33);
 		frmVerificadorDeDominios.getContentPane().add(btnExport);
+		
+		btInserirDominio = new JButton("Inserir");
+		btInserirDominio.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					if (txtInserirDominio.getText().equals("")) {
+						throw new Exception();
+					}
+					dominioList.add(txtInserirDominio.getText());
+					txtInserirDominio.setText("");
+					updateDominioList();
+				} catch (Exception e) {
+					JOptionPane.showMessageDialog(tableDominios, "Erro ao adicionar, Tente novamente.",
+							"Erro ao adicionar!", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
+		btInserirDominio.setBounds(292, 335, 89, 23);
+		frmVerificadorDeDominios.getContentPane().add(btInserirDominio);
+		
+		//tabelas
+		
+		tableDominios = new JTable();
+		tableDominios.setModel(new DefaultTableModel(new Object[][] { { null }, { null }, { null }, { null }, { null },
+				{ null }, { null }, { null }, { null }, { null }, }, new String[] { "Dominios" }) {
+			/**
+					 * 
+					 */
+					private static final long serialVersionUID = -7557510312156075286L;
+			boolean[] columnEditables = new boolean[] { false };
 
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			}
+		});
+		tableDominios.getColumnModel().getColumn(0).setResizable(false);
+		scrollPaneDominios.setViewportView(tableDominios);
+		
+		tableEmail = new JTable();
+		tableEmail.setModel(new DefaultTableModel(new Object[][] { { null }, { null }, { null }, { null }, { null },
+				{ null }, { null }, { null }, { null }, { null }, { null }, }, new String[] { "Email" }) {
+			/**
+					 * 
+					 */
+					private static final long serialVersionUID = 9131615632798182147L;
+			boolean[] columnEditables = new boolean[] { false };
+
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			}
+		});
+		tableEmail.getColumnModel().getColumn(0).setResizable(false);
+		scrollPaneEmail.setViewportView(tableEmail);
+		tableEmail.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+
+		tableResultado = new JTable();
+		tableResultado.setModel(new DefaultTableModel(new Object[][] { { null }, { null }, { null }, { null }, { null },
+				{ null }, { null }, { null }, { null }, { null }, }, new String[] { "Resultado" }));
+		scrollPane.setViewportView(tableResultado);
+		
+		//TextFields
+		textFieldEmail = new JTextField();
+		textFieldEmail.setBounds(139, 392, 549, 20);
+		frmVerificadorDeDominios.getContentPane().add(textFieldEmail);
+		textFieldEmail.setColumns(10);
+
+		textFieldDominios = new JTextField();
+		textFieldDominios.setBounds(139, 426, 549, 20);
+		frmVerificadorDeDominios.getContentPane().add(textFieldDominios);
+		textFieldDominios.setColumns(10);
+
+		txtInserirEmail = new JTextField();
+		txtInserirEmail.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent arg0) {
+				if (arg0.getKeyCode() == KeyEvent.VK_ENTER) {
+					try {
+						if (txtInserirEmail.getText().equals("")) {
+							throw new Exception();
+						}
+						emailList.add(txtInserirEmail.getText());
+						txtInserirEmail.setText("");
+						updateEmailList();
+					} catch (Exception a) {
+						JOptionPane.showMessageDialog(tableDominios, "Erro ao adicionar, Tente novamente.",
+								"Erro ao adicionar!", JOptionPane.ERROR_MESSAGE);
+					}
+				}
+			}
+		});
+		txtInserirEmail.setBounds(24, 304, 203, 20);
+		frmVerificadorDeDominios.getContentPane().add(txtInserirEmail);
+		txtInserirEmail.setColumns(10);
+
+		txtInserirDominio = new JTextField();
+		txtInserirDominio.addKeyListener(new KeyAdapter() { 
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					try {
+						if (txtInserirDominio.getText().equals("")) {
+							throw new Exception();
+						}
+						dominioList.add(txtInserirDominio.getText());
+						txtInserirDominio.setText("");
+						updateDominioList();
+					} catch (Exception e2) {
+						JOptionPane.showMessageDialog(tableDominios, "Erro ao adicionar, Tente novamente.",
+								"Erro ao adicionar!", JOptionPane.ERROR_MESSAGE);
+					}
+				}
+			}
+		});
+		txtInserirDominio.setColumns(10);
+		txtInserirDominio.setBounds(257, 304, 164, 20);
+		frmVerificadorDeDominios.getContentPane().add(txtInserirDominio);
+		//itens do menu
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.setBounds(0, 0, 844, 21);
 		frmVerificadorDeDominios.getContentPane().add(menuBar);
@@ -361,10 +356,28 @@ public class MainWindow {
 		JMenuItem mntmInstructions = new JMenuItem("Instructions");
 		mnHelp.add(mntmInstructions);
 
+		//Labels
 		JLabel lblComparadorDeEmails = new JLabel("Comparador de E-mails");
 		lblComparadorDeEmails.setFont(new Font("Tahoma", Font.PLAIN, 24));
 		lblComparadorDeEmails.setBounds(288, 32, 255, 36);
 		frmVerificadorDeDominios.getContentPane().add(lblComparadorDeEmails);
+		
+		JLabel lblListaDeEmails = new JLabel("Lista de E-mails");
+		lblListaDeEmails.setBounds(35, 395, 100, 14);
+		frmVerificadorDeDominios.getContentPane().add(lblListaDeEmails);
+
+		JLabel lblListaDeDominios = new JLabel("Lista de dominios");
+		lblListaDeDominios.setBounds(35, 429, 100, 14);
+		frmVerificadorDeDominios.getContentPane().add(lblListaDeDominios);
+		
+		JLabel lblInserirEmail = new JLabel("Inserir Email");
+		lblInserirEmail.setBounds(86, 290, 72, 14);
+		frmVerificadorDeDominios.getContentPane().add(lblInserirEmail);
+		
+		JLabel lblInserirDominio = new JLabel("Inserir Dominio");
+		lblInserirDominio.setBounds(292, 290, 89, 14);
+		frmVerificadorDeDominios.getContentPane().add(lblInserirDominio);
+		
 		frmVerificadorDeDominios.setResizable(false);
 	}
 	
@@ -429,10 +442,10 @@ public class MainWindow {
 	 * Atualiza tabela Email
 	 */
 	private void updateEmailList() {
-		DefaultTableModel modelo = (DefaultTableModel) tableEmail.getModel();
-		modelo.setNumRows(0);
-		for (String s : emailList) {
-			modelo.addRow(new Object[] { s });
+		DefaultTableModel modelo = (DefaultTableModel) tableEmail.getModel();// obtem o modelo da tabela
+		modelo.setNumRows(0);// zera a tabela
+		for (String s : emailList) {// percorre a lista de emails
+			modelo.addRow(new Object[] { s });//adiciona nova linha a tabela
 		}
 	}
 	
@@ -440,20 +453,20 @@ public class MainWindow {
 	 * Atualiza tabela Dominio
 	 */
 	private void updateDominioList() {
-		DefaultTableModel modelo = (DefaultTableModel) tableDominios.getModel();
-		modelo.setNumRows(0);
-		for (String s : dominioList) {
-			modelo.addRow(new Object[] { s });
+		DefaultTableModel modelo = (DefaultTableModel) tableDominios.getModel();// obtem o modelo da tabela
+		modelo.setNumRows(0);// zera a tabela
+		for (String s : dominioList) {// percorre a lista de dominios
+			modelo.addRow(new Object[] { s });//adiciona nova linha a tabela
 		}
 	}
 	/**
 	 * Atualiza tabela Resultado
 	 */
 	private void updateResultadoList() {
-		DefaultTableModel modelo = (DefaultTableModel) tableResultado.getModel();
-		modelo.setNumRows(0);
-		for (String s : resultList) {
-			modelo.addRow(new Object[] { s });
+		DefaultTableModel modelo = (DefaultTableModel) tableResultado.getModel();// obtem o modelo da tabela
+		modelo.setNumRows(0); // zera a tabela
+		for (String s : resultList) { // percorre a lista de resultados
+			modelo.addRow(new Object[] { s }); //adiciona nova linha a tabela
 		}
 	}
 

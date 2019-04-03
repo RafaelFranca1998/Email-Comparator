@@ -59,8 +59,7 @@ public class CheckErrorWindow {
 
 		new Thread(new Runnable() {
 			public void run() {
-				// ######################Configurações da
-				// tela#######################################
+				//Configurações da tela
 				frmVerificando = new JFrame();
 				frmVerificando.setTitle("Verificando...");
 				frmVerificando.setBounds(100, 100, 450, 227);
@@ -224,8 +223,7 @@ public class CheckErrorWindow {
 
 	}
 
-	// ####################################Threads do
-	// Progressbar###############################
+	// ####################################Threads do Progressbar###############################
 	/**
 	 * Classe para atualizar o Progressbar, implementa metodos da classr
 	 * {@link Runnable}.
@@ -274,33 +272,59 @@ public class CheckErrorWindow {
 	}
 
 	// ############################Getter and Setters####################################
+	/**
+	 * Obtem o contador de Emails válidos.
+	 * @return Um inteiro com os emails válidos.
+	 */
 	public int getCounter() {
 		return counter;
 	}
-
+	/**
+	 * Lista de emails inválidos.
+	 * @return um arraylist com os emails inválidos.
+	 */
 	public ArrayList<String> getInvalidEmail() {
 		return invalidEmail;
 	}
 
+	/**
+	 * lista de dominios.
+	 * @return um arraylist com a lista de dominios.
+	 */
 	public ArrayList<String> getDominios() {
 		return dominios;
 	}
-
+	/**
+	 * Obtem lista de emails completa.
+	 * @return arraylist com emails.
+	 */
 	public ArrayList<String> getEmail() {
 		return email;
 	}
-
+	/**
+	 * lista com emails validados.
+	 * @return arraylist com emails válidos.
+	 */
 	public ArrayList<String> getValidEmail() {
 		return validEmail;
 	}
 
 	// #####################Listener################################################
 	private OnCompleteListener onCompleteListener;
-
+	
+	/**
+	 * Listener da classe.
+	 * @param onCompleteListener
+	 */
 	public void setOnCompleteListener(OnCompleteListener onCompleteListener) {
 		this.onCompleteListener = onCompleteListener; // listener da classe.
 	}
-
+	
+	/**
+	 * interface a ser inplementada toda vez que o setOnCompleteListener for usado.
+	 * @author Rafael
+	 *
+	 */
 	public interface OnCompleteListener {// interface a ser executada.
 		public void onComplete();
 	}
